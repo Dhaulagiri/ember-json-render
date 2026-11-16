@@ -8,9 +8,14 @@ export interface JsonRenderEvent {
 
 export interface JsonRenderComponentArgs {
   props: Record<string, unknown>;
+  /** JSON Pointer paths for props that were declared with $bindState/$bindItem. */
+  bindings: Record<string, string>;
   state: Record<string, unknown>;
   emit: (eventName: string, payload?: unknown) => void;
   children: string[];
+  item?: unknown;
+  index?: number;
+  bind: (propName: string, value: unknown) => void;
 }
 
 export type JsonRenderRegistry = Record<string, ComponentLike<JsonRenderComponentArgs>>;
