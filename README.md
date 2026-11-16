@@ -89,6 +89,4 @@ Pass `ui.spec` and `ui.isStreaming` to `<JsonRenderer>`. The controller accepts 
 
 The `docs/` site is published with GitHub Pages through `.github/workflows/pages.yml`. Add a Changesets file with `pnpm changeset` for each user-facing change. Version packages with `pnpm version-packages`; publishing remains a manual `pnpm release` step through the maintainer's npm trusted publishing setup.
 
-Enable **Settings → Pages → Build and deployment → GitHub Actions** once in the repository to turn on the docs workflow. The release workflow stays gated until the first manual npm release and trusted publishing setup are complete; set the repository variable `NPM_TRUSTED_PUBLISHING_ENABLED=true` afterward to enable Changesets automation.
-
 The addon uses Embroider v2 package metadata and Rollup packaging. Its current API is an early preview; consumers should check the docs for the supported surface and current limitations.
