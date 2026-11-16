@@ -13,7 +13,7 @@
   "peerDependencies": {
     "@glimmer/component": "^2.0.0",
     "@json-render/core": "^0.23.0",
-    "ember-source": "^5.0.0 || ^6.0.0"
+    "ember-source": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
@@ -26,7 +26,8 @@
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "rollup": "^4.6.0",
     "typescript": "^5.7.0",
-    "@changesets/cli": "^2.27.0"
+    "@changesets/cli": "^2.27.0",
+    "@rollup/plugin-node-resolve": "^16.0.0"
   },
   "exports": {
     ".": "./dist/index.js",
@@ -53,5 +54,9 @@
     "version": 2,
     "type": "addon",
     "main": "addon-main.cjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dhaulagiri/ember-json-render.git"
   }
 }

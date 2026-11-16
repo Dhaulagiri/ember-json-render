@@ -10,7 +10,7 @@ Early preview of an Ember adapter for the shared json-render spec. Catalogs and 
 npm install ember-json-render @json-render/core
 ```
 
-This package targets Ember 5/6 and Glimmer components. `@json-render/core` remains the source of the spec, expression, action, and streaming protocol APIs; no forked wire format is introduced.
+This package targets Ember 5, 6, and 7 with Glimmer components. `@json-render/core` remains the source of the spec, expression, action, and streaming protocol APIs; no forked wire format is introduced.
 
 ## Define a registry
 
