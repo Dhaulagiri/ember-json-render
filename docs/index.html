@@ -86,6 +86,9 @@ export const registry = defineRegistry({
         <article><code class="api-name">JsonRenderer</code><div><p>Root component that owns or subscribes to a state store and renders a spec.</p><dl><dt>Required</dt><dd><code>@spec</code>, <code>@registry</code></dd><dt>Optional</dt><dd><code>@state</code>, <code>@store</code>, <code>@loading</code>, <code>@actions</code>, <code>@onAction</code>, <code>@onStateChange</code></dd></dl></div></article>
         <article><code class="api-name">defineRegistry(registry)</code><div><p>Type-preserving helper for mapping spec component names to Glimmer components.</p><pre><code>const registry = defineRegistry({ Card, Button });</code></pre></div></article>
         <article><code class="api-name">JsonRenderEvent</code><div><p>Action notification passed to <code>@onAction</code>: <code>{ name, params, elementKey }</code>. Registered action handlers are supplied through <code>@actions</code>.</p></div></article>
+        <article><code class="api-name">createJsonRenderUIStream(options)</code><div><p>Tracked client for a SpecStream JSONL endpoint. Use <code>send(prompt, options?)</code>, read <code>spec</code>, <code>isStreaming</code>, and <code>error</code>, and call <code>stop()</code> or <code>clear()</code> as needed.</p><pre><code>const ui = createJsonRenderUIStream({ api: '/api/generate' });
+await ui.send('A dashboard for weekly sales');
+// Render ui.spec with JsonRenderer while ui.isStreaming.</code></pre></div></article>
       </div>
     </section>
 
