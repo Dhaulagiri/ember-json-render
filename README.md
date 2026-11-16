@@ -12,6 +12,13 @@ npm install ember-json-render @json-render/core
 
 This package targets Ember 5, 6, and 7 with Glimmer components. `@json-render/core` remains the source of the spec, expression, action, and streaming protocol APIs; no forked wire format is introduced.
 
+TypeScript declarations ship with the addon for the package root and component,
+registry, and streaming subpaths. Use your Ember application's usual TypeScript
+and Glint setup (with `moduleResolution: "bundler"` and Ember's types enabled);
+no local `declare module 'ember-json-render'` shim is needed. Remove any such
+shim when upgrading to the declaration-enabled release so it does not shadow
+the published types.
+
 ## Define a registry
 
 Catalog components receive resolved `@props`, `@state`, an `@emit` callback, and children through the yielded block:
@@ -40,6 +47,12 @@ import UiButton from './components/ui-button';
 
 export const registry = defineRegistry({ Card: UiCard, Button: UiButton });
 ```
+
+For the complete catalog argument and yielded-block contract, extend
+`Component<JsonRenderComponentSignature>` with the signature imported as a type
+from `ember-json-render`. `JsonRenderComponentArgs` is also exported for consumers
+that define their own signature. The default block yields child content with no
+block parameters; `item` and `index` are optional repeat-scope arguments.
 
 ```hbs
 <JsonRenderer @spec={{this.spec}} @registry={{this.registry}} @onAction={{this.handleAction}} />
@@ -99,3 +112,7 @@ consumer package, and renders it in Chromium with Ember. It checks template
 attachment for all three exported components, app reexports, nested and repeated
 catalog rendering, and reactive store updates. The published templates stay in
 Ember's portable `precompileTemplate` format for compilation by the consuming app.
+The same packed consumer checks root and subpath imports with TypeScript and
+Glint, including catalog arguments, default blocks, and rejected invalid usage.
+`pnpm build` emits declarations only after Rollup has cleaned and built `dist`;
+`npm pack` runs that same build through `prepack`.

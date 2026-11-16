@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { createStateStore, executeAction, resolveAction, type ActionHandler, type Spec, type StateStore } from '@json-render/core';
-import type { JsonRenderEvent, JsonRenderRegistry } from '../registry';
+import type { JsonRenderEvent, JsonRenderRegistry } from '../registry.js';
 
 interface Args {
   spec: Spec;
@@ -26,15 +26,16 @@ export default class JsonRenderer extends Component<{ Args: Args }> {
     const seedState = this.args.state ?? this.args.spec.state ?? {};
     const storeChanged = supplied
       ? supplied !== this.currentStore
-      : this.usingSuppliedStore || !this.currentStore || seedState !== this.seedState;
-    if (storeChanged) {
+      : this.usingSuppliedStore || seedState !== this.seedState;
+    if (!this.currentStore || storeChanged) {
       this.unsubscribe?.();
       this.seedState = seedState;
-      this.currentStore = supplied ?? createStateStore(seedState);
+      const store = supplied ?? createStateStore(seedState);
+      this.currentStore = store;
       this.usingSuppliedStore = Boolean(supplied);
-      this.unsubscribe = this.currentStore.subscribe(() => {
+      this.unsubscribe = store.subscribe(() => {
         this.revision++;
-        this.args.onStateChange?.(this.currentStore!.getSnapshot());
+        this.args.onStateChange?.(store.getSnapshot());
       });
     }
     return this.currentStore;
