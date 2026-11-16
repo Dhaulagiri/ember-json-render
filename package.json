@@ -1,6 +1,6 @@
 {
   "name": "ember-json-render",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Render json-render UI specs with Ember and Glimmer components",
   "type": "module",
   "keywords": [
