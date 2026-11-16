@@ -9,10 +9,10 @@ export default {
   plugins: [
     nodeResolve({ extensions: ['.mjs', '.js', '.json', '.node', '.ts'] }),
     addon.publicEntrypoints(['index.ts', 'components/**/*.ts']),
-    addon.appReexports(['components/json-renderer.ts']),
+    addon.appReexports(['components/json-renderer.js', 'components/json-node.js']),
     babel({
       babelHelpers: 'bundled',
-      extensions: ['.js', '.mjs', '.cjs', '.ts'],
+      extensions: ['.js', '.mjs', '.cjs', '.ts', '.hbs'],
       babelrc: false,
       configFile: './babel.config.cjs',
     }),

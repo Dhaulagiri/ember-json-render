@@ -90,3 +90,12 @@ Pass `ui.spec` and `ui.isStreaming` to `<JsonRenderer>`. The controller accepts 
 The `docs/` site is published with GitHub Pages through `.github/workflows/pages.yml`. Add a Changesets file with `pnpm changeset` for each user-facing change. Version packages with `pnpm version-packages`; publishing remains a manual `pnpm release` step through the maintainer's npm trusted publishing setup.
 
 The addon uses Embroider v2 package metadata and Rollup packaging. Its current API is an early preview; consumers should check the docs for the supported surface and current limitations.
+
+## Package regression test
+
+Run `pnpm exec playwright install chromium` once, then `pnpm test`. The test runs
+`npm pack` (including the prepack build), extracts the tarball into an isolated
+consumer package, and renders it in Chromium with Ember. It checks template
+attachment for all three exported components, app reexports, nested and repeated
+catalog rendering, and reactive store updates. The published templates stay in
+Ember's portable `precompileTemplate` format for compilation by the consuming app.
