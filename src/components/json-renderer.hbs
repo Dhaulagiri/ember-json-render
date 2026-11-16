@@ -1,0 +1,13 @@
+{{#if @spec}}
+  {{#let this.state as |state|}}
+    <JsonNode
+      @elementKey={{@spec.root}}
+      @spec={{@spec}}
+      @registry={{@registry}}
+      @state={{state}}
+      @store={{this.store}}
+      @emit={{this.emit}}
+      @loading={{@loading}}
+    />
+  {{/let}}
+{{/if}}

@@ -1,0 +1,25 @@
+{
+  "name": "ember-json-render",
+  "version": "0.1.0",
+  "description": "Render json-render UI specs with Ember and Glimmer components",
+  "type": "module",
+  "keywords": ["ember", "json-render", "generative-ui", "glimmer"],
+  "license": "Apache-2.0",
+  "peerDependencies": {
+    "@glimmer/component": "^2.0.0",
+    "@json-render/core": "^0.1.0",
+    "ember-source": "^5.0.0 || ^6.0.0"
+  },
+  "devDependencies": {
+    "@types/ember__component": "^4.0.0",
+    "typescript": "^5.7.0"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./styles.css": "./src/styles.css"
+  },
+  "files": ["dist", "src/styles.css", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}

@@ -1,0 +1,37 @@
+{{#if this.visible}}
+  {{#if this.component}}
+    {{#let this.component as |CatalogComponent|}}
+      {{#if this.element.repeat}}
+        {{#each this.repeated key="@index" as |item index|}}
+          <CatalogComponent
+            @props={{this.props}}
+            @state={{@state}}
+            @emit={{this.emit}}
+            @children={{this.children}}
+            @item={{item}}
+            @index={{index}}
+            @bind={{this.bind}}
+          >
+            {{#each this.children as |childKey|}}
+              <JsonNode @elementKey={{childKey}} @spec={{@spec}} @registry={{@registry}} @state={{@state}} @store={{@store}} @emit={{@emit}} @loading={{@loading}} @item={{item}} @index={{index}} />
+            {{/each}}
+          </CatalogComponent>
+        {{/each}}
+      {{else}}
+        <CatalogComponent
+          @props={{this.props}}
+          @state={{@state}}
+          @emit={{this.emit}}
+          @children={{this.children}}
+          @bind={{this.bind}}
+        >
+          {{#each this.children as |childKey|}}
+            <JsonNode @elementKey={{childKey}} @spec={{@spec}} @registry={{@registry}} @state={{@state}} @store={{@store}} @emit={{@emit}} @loading={{@loading}} />
+          {{/each}}
+        </CatalogComponent>
+      {{/if}}
+    {{/let}}
+  {{else if @loading}}
+    <span class="jr-missing" data-jr-key={{@elementKey}}>Loading…</span>
+  {{/if}}
+{{/if}}
