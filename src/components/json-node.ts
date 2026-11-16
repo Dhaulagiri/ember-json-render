@@ -12,7 +12,7 @@ import {
   type StateStore,
   type UIElement,
 } from '@json-render/core';
-import type { JsonRenderRegistry } from '../registry';
+import type { JsonRenderRegistry } from '../registry.js';
 
 interface Args {
   elementKey: string;

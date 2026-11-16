@@ -12,7 +12,7 @@ import { rollup } from 'rollup';
 const require = createRequire(import.meta.url);
 const root = resolve(import.meta.dirname, '..');
 
-test('packed addon attaches templates and renders nested, repeated catalog components', async (t) => {
+test('packed addon provides checked declarations and renders nested, repeated catalog components', async (t) => {
   const temporary = await mkdtemp(join(root, '.package-test-'));
   t.after(() => rm(temporary, { recursive: true, force: true }));
   execFileSync('npm', ['pack', '--pack-destination', temporary], { cwd: root, stdio: 'pipe' });
@@ -24,6 +24,29 @@ test('packed addon attaches templates and renders nested, repeated catalog compo
   await writeFile(join(temporary, 'package.json'), JSON.stringify({ private: true, type: 'module' }));
   await copyFile(join(root, 'tests/fixtures/consumer.js'), join(temporary, 'consumer.js'));
   const packed = JSON.parse(await readFile(join(packageDir, 'package.json'), 'utf8'));
+  await t.test('TypeScript and Glint consume published root and subpath declarations', async () => {
+    for (const fixture of ['consumer-types.ts', 'consumer-template.gts']) {
+      await copyFile(join(root, 'tests/fixtures', fixture), join(temporary, fixture));
+    }
+    await writeFile(join(temporary, 'tsconfig.json'), JSON.stringify({
+      compilerOptions: {
+        target: 'ES2022',
+        module: 'ESNext',
+        moduleResolution: 'Bundler',
+        strict: true,
+        noEmit: true,
+        skipLibCheck: true,
+        experimentalDecorators: true,
+        types: ['ember-source/types'],
+      },
+      include: ['*.ts', '*.gts'],
+      glint: { environment: 'ember-template-imports' },
+    }));
+    for (const compiler of ['typescript/bin/tsc', '@glint/core/bin/glint']) {
+      execFileSync(process.execPath, [require.resolve(compiler), '--project', temporary], { cwd: temporary, stdio: 'pipe' });
+    }
+    assert.ok(packed.dependencies['@glint/template'], 'public declaration dependency is installed for consumers');
+  });
   const appJS = packed['ember-addon']['app-js'];
   assert.ok(appJS?.['./components/json-renderer.js'], 'JsonRenderer has an app reexport');
   assert.ok(appJS?.['./components/json-node.js'], 'recursive JsonNode has an app reexport');

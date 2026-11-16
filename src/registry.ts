@@ -17,7 +17,12 @@ export interface JsonRenderComponentArgs {
   bind: (propName: string, value: unknown) => void;
 }
 
-export type JsonRenderRegistry = Record<string, ComponentLike<JsonRenderComponentArgs>>;
+export interface JsonRenderComponentSignature {
+  Args: JsonRenderComponentArgs;
+  Blocks: { default: [] };
+}
+
+export type JsonRenderRegistry = Record<string, ComponentLike<JsonRenderComponentSignature>>;
 
 export function defineRegistry<T extends JsonRenderRegistry>(registry: T): T {
   return registry;
