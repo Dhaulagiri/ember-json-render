@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Contribute to ember-json-render and prepare a Changesets release.">
+  <title>Contributing &amp; releases · ember-json-render</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="index.html"><span class="brand-mark">E</span> ember-json-render</a><nav aria-label="Main navigation"><a href="index.html#quick-start">Quick start</a><a href="index.html#api">API</a><a href="index.html#features">Features</a><a class="github" href="https://github.com/Dhaulagiri/ember-json-render">GitHub ↗</a></nav></header>
+  <main class="subpage">
+    <div class="eyebrow">Project guide</div><h1>Contributing &amp; releases</h1><p class="lede">Keep the adapter close to upstream json-render while preserving an Ember-first component API.</p>
+    <section class="section compact"><h2>Development</h2><p>Use Node.js and npm. Install dependencies, build the addon, and try it in an Ember app compatible with the package peer dependencies.</p><pre><code>npm install
+npm run build</code></pre><p>Keep feature claims in the README and docs aligned with what the renderer implements. Changes to the core wire format should be coordinated with <a href="https://github.com/vercel-labs/json-render">upstream json-render</a>.</p></section>
+    <section class="section compact"><h2>Prepare a release</h2><ol><li>Make and review the code change.</li><li>Add a Changesets note with <code>npm run changeset</code>. Choose <code>patch</code> for fixes, <code>minor</code> for compatible features, and <code>major</code> for breaking changes.</li><li>Commit the generated file under <code>.changeset/</code> with the code change and open a pull request.</li><li>After merging, run <code>npm run version-packages</code> to apply the queued version and changelog updates. Review and commit those changes.</li><li>Build and verify the package, then publish manually with <code>npm run release</code> when the release is approved and npm trusted publishing is configured.</li></ol><div class="notice"><strong>Publishing is manual</strong><span>GitHub Pages deploys the docs only. There is no npm publish workflow; a maintainer initiates publishing from a trusted environment.</span></div></section>
+    <section class="section compact"><h2>Changesets policy</h2><p>Changesets are based on <code>main</code> and the package is configured for public npm release. Keep one changeset per user-visible package change so the changelog explains what consumers need to know.</p><a class="button secondary" href="index.html">← Back to docs</a></section>
+  </main>
+  <footer><a class="brand" href="index.html"><span class="brand-mark">E</span> ember-json-render</a><span>Apache 2.0</span><a href="https://github.com/Dhaulagiri/ember-json-render">GitHub ↗</a></footer>
+</body>
+</html>

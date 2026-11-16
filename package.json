@@ -12,7 +12,7 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@glimmer/component": "^2.0.0",
-    "@json-render/core": "^0.1.0",
+    "@json-render/core": "^0.23.0",
     "ember-source": "^5.0.0 || ^6.0.0"
   },
   "devDependencies": {
@@ -25,7 +25,8 @@
     "@rollup/plugin-babel": "^6.0.4",
     "babel-plugin-ember-template-compilation": "^4.0.0",
     "rollup": "^4.6.0",
-    "typescript": "^5.7.0"
+    "typescript": "^5.7.0",
+    "@changesets/cli": "^2.27.0"
   },
   "exports": {
     ".": "./dist/index.js",
@@ -40,7 +41,10 @@
   ],
   "scripts": {
     "build": "rollup --config",
-    "prepack": "rollup --config"
+    "prepack": "rollup --config",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "npm run build && changeset publish"
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.10.0"
