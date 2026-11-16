@@ -2,7 +2,7 @@
 
 Ember and Glimmer adapter for [Vercel's json-render](https://github.com/vercel-labs/json-render). It renders the same flat `Spec` shape used by other framework adapters and lets an application map catalog names to ordinary Ember components.
 
-> Early preview: this first cut covers a focused renderer surface (registry, nested children, basic state bindings, visibility, repeat, and action callbacks). It does not yet implement every feature in `@json-render/core` or the broader streaming/chat helpers available in the upstream ecosystem.
+Early preview of an Ember adapter for the shared json-render spec. Catalogs and specs stay portable between framework adapters; the Ember package supplies the renderer and a tracked SpecStream client.
 
 ## Install
 
@@ -10,7 +10,7 @@ Ember and Glimmer adapter for [Vercel's json-render](https://github.com/vercel-l
 npm install ember-json-render @json-render/core
 ```
 
-This package targets Ember 5/6 and Glimmer components. `@json-render/core` remains the source of the spec and catalog types; no forked wire format is introduced.
+This package targets Ember 5/6 and Glimmer components. `@json-render/core` remains the source of the spec, expression, action, and streaming protocol APIs; no forked wire format is introduced.
 
 ## Define a registry
 
@@ -61,14 +61,32 @@ spec: Spec = {
 };
 ```
 
-`@onAction` receives `{ name, params, elementKey }`. Built-in `setState` and `removeState` action bindings are handled by the renderer. Supply `@store` to share an upstream `StateStore`, or `@state` to seed an owned store. Components can receive `@bind` and call it with a JSON Pointer path to update state.
+`@onAction` receives `{ name, params, elementKey }`. Supply `@actions` to handle catalog action names. Built-in `setState`, `removeState`, and `pushState` bindings update the renderer's `StateStore`. Supply `@store` to share an upstream store, or `@state` to seed an owned store. Components receive resolved `@props`, `@bindings`, and a `@bind` callback; call `this.args.bind('value', nextValue)` in a component method to write a prop declared with `$bindState` or `$bindItem`.
 
 ## Dynamic props
 
-The initial adapter resolves literals, `$state`, `$bindState`, `$template`, and `$cond` objects. Visibility and repeated arrays are supported for common cases. Unknown catalog component names are skipped while `@loading` is false and shown as a small placeholder while a streamed spec is incomplete.
+The renderer delegates dynamic prop resolution and visibility evaluation to `@json-render/core`, including `$state`, `$bindState`, `$bindItem`, `$item`, `$index`, templates, conditionals, and nested repeat scopes. Unknown catalog component names are skipped while `@loading` is false and shown as a placeholder while a streamed spec is incomplete.
 
-For catalog schemas, prompts, full expression/directive support, and SpecStream parsing, use the upstream `@json-render/core` APIs directly. The Ember adapter is intentionally a framework renderer, not a reimplementation of core.
+## Streaming a spec
 
-## Status
+`createJsonRenderUIStream` is a tracked controller for endpoints that return SpecStream JSONL (RFC 6902 patch lines):
 
-The workspace is a source starter and has not been built against a generated Ember app yet. The addon API and packaging need verification against the consuming app's exact Ember CLI / Embroider setup before publishing.
+```ts
+import { createJsonRenderUIStream } from 'ember-json-render';
+
+ui = createJsonRenderUIStream({ api: '/api/generate' });
+// In a component action:
+await this.ui.send('A dashboard for weekly sales');
+// Refine:
+if (this.ui.spec) await this.ui.send('Use a bar chart', { previousSpec: this.ui.spec });
+// Stop and keep the partial result: this.ui.stop();
+// Clear the current result and error: this.ui.clear();
+```
+
+Pass `ui.spec` and `ui.isStreaming` to `<JsonRenderer>`. The controller accepts a custom `fetch`, headers, and an `onComplete` callback. For chat streams, prompts, catalog schemas, validation, and directives, use the corresponding upstream `@json-render/core` APIs alongside this renderer.
+
+## Docs and releases
+
+The `docs/` site is published with GitHub Pages through `.github/workflows/pages.yml`. Add a Changesets file with `pnpm changeset` for each user-facing change. Version packages with `pnpm version-packages`; publishing remains a manual `pnpm release` step through the maintainer's npm trusted publishing setup.
+
+The addon uses Embroider v2 package metadata and Rollup packaging. Its current API is an early preview; consumers should check the docs for the supported surface and current limitations.
