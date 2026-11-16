@@ -1,6 +1,7 @@
 node_modules/
 dist/
 coverage/
+.package-test-*/
 .DS_Store
 .env
 .env.*
