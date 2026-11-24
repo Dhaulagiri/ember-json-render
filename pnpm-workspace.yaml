@@ -1,2 +1,2 @@
 minimumReleaseAgeExclude:
-  - '@json-render/core@0.23.0'
+  - '@json-render/core@0.23.2'
